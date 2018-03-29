@@ -1,0 +1,10 @@
+#!/bin/bash
+root=$(dirname "$0")
+# echo ${root}
+# exec "${root}"/KNcreateOnDisk
+
+# cd ${root}
+
+# cd ../
+exec "${root}"/KNcreateOnDisk
+# echo "${root}"/KNcreateOnDisk

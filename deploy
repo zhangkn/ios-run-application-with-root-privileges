@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# mkdir -p或--parents 若所要建立目录的上层目录目前尚未建立，则会一并建立上层目录；
+# devzkndeMacBook-Pro:Layout devzkn$ mkdir -p private/var/mobile/Media/TouchSprite/lua/
+
+
+function knftpuser(){
+	 # 上传文件到服务器，即更新deb cydia 源
+   cp ./packages/*.deb ~/cydia/debs/com.libing.taoke.deb
+   sh  ~/bin/kncydia
+   scp -r ~/cydia cydia://home/ftpuser
+}
+
+
+function kncydia(){
+    # 建立index
+    cd ~/cydia 
+    rm -rf ~/cydia/Packages.bz
+    rm -rf ~/cydia/Packages.bz2
+    rm  -rf ~/cydia/Packages
+    # Packages去掉路径前缀, debs 最好使用相对路径
+    dpkg-scanpackages debs /dev/null > Packages
+# 利用 bzip2 生成 Cydia 可以识别的文件格式
+bzip2 ~/cydia/Packages
+
+# tar zcvf Packages.gz Packages
+# bzip2 -k Packages Packages.bz2
+# 制作 Release【Optional】
+}
+
+
+echo "" > ~/.ssh/known_hosts
+
+
+
+
+cd `dirname $0` 
+make clean
+rm -rf ./packages
+make package install
+
+# knftpuser
+# scp ./taoke.lua usb2222:/private/var/mobile/Media/TouchSprite/lua/
+ # mv ./taoke.lua Layout/private/var/mobile/Media/TouchSprite/lua/
+# scp ./checkDeviceLock.lua iphone150:/private/var/mobile/Media/TouchSprite/lua/
+
+# rm -f ./debs/*
+
+exit 0
